@@ -12,7 +12,7 @@ TERRAFORM ?= $(shell which terraform 2>/dev/null || which true 2>/dev/null)
 GO_MD2MAN ?= go-md2man
 LN = ln
 RM = rm
-
+MK = mkdir -p
 BINPATH       := $(abspath ./bin)
 GOBINPATH     := $(shell $(GO) env GOPATH)/bin
 COMMIT        := $(shell git rev-parse HEAD)
@@ -41,7 +41,8 @@ all: install
 
 .PHONY: build
 build: go-version-check
-	$(GO) build $(GOMODFLAG) $(SKUBA_LDFLAGS) -tags $(TAGS) ./cmd/...
+	$(MK) $(BINPATH)
+	$(GO) build $(GOMODFLAG) $(SKUBA_LDFLAGS) -o $(BINPATH) -tags $(TAGS) ./cmd/...
 
 MANPAGES_MD := $(wildcard docs/man/*.md)
 MANPAGES    := $(MANPAGES_MD:%.md=%)
